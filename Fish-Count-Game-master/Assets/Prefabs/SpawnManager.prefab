@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7960068912630491425
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3010342069371883113}
+  - component: {fileID: 8156072920527335293}
+  m_Layer: 0
+  m_Name: SpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3010342069371883113
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7960068912630491425}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8156072920527335293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7960068912630491425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f705cd363f19af84094fcd7149d727cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numbersPrefab:
+  - {fileID: 363096623624056878, guid: 1e33ec29e146aa246b55581fd11f1ec2, type: 3}
+  - {fileID: 5103833393577117355, guid: 79f0515c2cc3a58469b9a12b0db495da, type: 3}
+  - {fileID: 5769335618502633615, guid: 5ac572f713d73364d9fa2616b67c0ba4, type: 3}
+  - {fileID: 6500715150700122579, guid: fc056662523f06f45b00c6575800c7fe, type: 3}
+  - {fileID: 7882147964117156776, guid: e98409e55c83fea4e8d725d9271c51e1, type: 3}
+  - {fileID: 4297819032713943497, guid: d61339e72eb013a4481770d967f167e9, type: 3}
+  - {fileID: 7398783183565275733, guid: 5ac2805496ea41949bb2d7e84c0178c9, type: 3}
+  - {fileID: 5921360104967533344, guid: a024ab604748fcf49bd2cf50a55e1f58, type: 3}
+  - {fileID: 7093729027365668487, guid: 2ec55aaadbbebc54fb2ba822b202d541, type: 3}
+  - {fileID: 2274591339189566233, guid: df34775374082004789a104d10d01361, type: 3}
+  fruitsPrefabs:
+  - {fileID: 4297819032713943497, guid: 9544c13da59b2cb4d8356f04c97cfbd5, type: 3}
+  - {fileID: 5103833393577117355, guid: 58f715a873e49e8428b102f137e47daa, type: 3}
+  - {fileID: 7882147964117156776, guid: 13f2fd96405664d48b73e1ea2cf6fa9c, type: 3}
+  - {fileID: 6500715150700122579, guid: 47aa5039d930c674281adf6bfd1a1d70, type: 3}
+  - {fileID: 7398783183565275733, guid: 5c1ee28490dd7b54bb7ff2723bfa8ad8, type: 3}
+  - {fileID: 7093729027365668487, guid: 25569ed761c1aa34fb13c6eb7dd1887b, type: 3}
+  - {fileID: 5921360104967533344, guid: a23640441a51aac429c37284c7d603c8, type: 3}
+  - {fileID: 2274591339189566233, guid: a2401145b35472440a24019e12c7a08a, type: 3}
+  - {fileID: 363096623624056878, guid: 40d6e67a15939e64ea8bb2a4d98e81ee, type: 3}
+  - {fileID: 5103833393577117355, guid: 58f715a873e49e8428b102f137e47daa, type: 3}
+  spawnPoint1: {fileID: 0}
+  spawnPoint2: {fileID: 0}
+  spawnInterval: 4
+  minY: -3.86
+  maxY: 3.86
+  minY1: -3.86
+  maxY1: 3.86
