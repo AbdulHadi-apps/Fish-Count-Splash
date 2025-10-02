@@ -2,14 +2,24 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using EasyTransition;
+using TMPro;
 
 public class QuizGameLevel2 : MonoBehaviour
 {
+    public TransitionSettings transition;
+    public float startDelay;
+    public Animator animator;
     public FishSpawner fishSpawner;
     public Button[] answerButtons;
     public Image[] feedbackIcons; // Child images for tick/cross
     public Text questionText;
     public Text scoreText;
+    public int currentlevel;
+    public TextMeshProUGUI levelText;
+    public static Button CorrectAnswerButton;
+
 
     public GameObject segmentResultPanel; // ✅ For every 5 questions
     public GameObject finalGamePanel; // ✅ For 100 questions
@@ -22,6 +32,12 @@ public class QuizGameLevel2 : MonoBehaviour
 
     public Sprite tickSprite;   // ✅ Assign in Inspector
     public Sprite crossSprite;  // ❌ Assign in Inspector
+
+    public AudioSource correctAudio;
+    public AudioSource errorAudio;
+
+    private int segmentScore = 0;
+    private int segmentQuestions = 0;
 
     // 🔊 Added for audio
     public NumbersVoice numbersVoice;
@@ -37,12 +53,16 @@ public class QuizGameLevel2 : MonoBehaviour
 
     void Start()
     {
+        currentlevel = PlayerPrefs.GetInt("CurrentLevel",1);
         UpdateScoreText();
+        levelText.text="Level: " + currentlevel;
         AskQuestion();
     }
 
     void AskQuestion()
     {
+        animator.Play("TextAppear", -1, 0f);
+        TransitionManager.Instance().Transition(transition, startDelay);
         answered = false;
 
         foreach (Transform child in fishSpawner.transform)
@@ -50,8 +70,13 @@ public class QuizGameLevel2 : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        int fishCount = Random.Range(1, 19);
+        // Progressive difficulty: more fish as questions go on
+        int minFish = Mathf.Min(1 + (currentQuestion / 10), 10);   // increases every 10 Qs
+        int maxFish = Mathf.Min(5 + (currentQuestion / 5), 18);    // increases every 5 Qs
+
+        int fishCount = Random.Range(minFish, maxFish + 1);
         fishSpawner.SpawnFish(fishCount);
+
         correctAnswer = fishSpawner.currentFishCount;
 
         questionText.text = $"Question {currentQuestion} of {totalQuestions}\nHow many fish do you see?";
@@ -62,10 +87,31 @@ public class QuizGameLevel2 : MonoBehaviour
     {
         correctButtonIndex = Random.Range(0, 4);
 
+        // Keep track of answers we already used
+        HashSet<int> usedAnswers = new HashSet<int>();
+        usedAnswers.Add(correctAnswer);
+
         for (int i = 0; i < 4; i++)
         {
-            int answer = (i == correctButtonIndex) ? correctAnswer : GetUniqueWrongAnswer();
-            answerButtons[i].GetComponentInChildren<Text>().text = answer.ToString();
+            int answer;
+            if (i == correctButtonIndex)
+            {
+                answer = correctAnswer;
+                CorrectAnswerButton = answerButtons[i];
+            }
+            else
+            {
+                do
+                {
+                    answer = Random.Range(1, 19); // 1–18 possible answers
+                } while (usedAnswers.Contains(answer));
+
+                usedAnswers.Add(answer);
+            }
+
+            // 🔹 Animate text change
+            Text buttonText = answerButtons[i].GetComponentInChildren<Text>();
+            StartCoroutine(AnimateTextChange(buttonText, answer.ToString()));
 
             feedbackIcons[i].gameObject.SetActive(false);
 
@@ -73,6 +119,40 @@ public class QuizGameLevel2 : MonoBehaviour
             answerButtons[i].onClick.RemoveAllListeners();
             answerButtons[i].onClick.AddListener(() => CheckAnswer(index));
         }
+    }
+
+    IEnumerator AnimateTextChange(Text textComponent, string newText)
+    {
+        yield return new WaitForSeconds(0.5f);
+        Vector3 originalScale = textComponent.transform.localScale;
+
+        // Scale up
+        float time = 0f;
+        float duration = 0.25f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            float scale = Mathf.Lerp(1f, 1.8f, t);
+            textComponent.transform.localScale = originalScale * scale;
+            yield return null;
+        }
+
+        // Change text while large
+        textComponent.text = newText;
+
+        // Scale back down
+        time = 0f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            float scale = Mathf.Lerp(2f, 1.8f, t);
+            textComponent.transform.localScale = originalScale * scale;
+            yield return null;
+        }
+
+        textComponent.transform.localScale = originalScale;
     }
 
     int GetUniqueWrongAnswer()
@@ -91,17 +171,20 @@ public class QuizGameLevel2 : MonoBehaviour
         answered = true;
 
         questionsAnswered++;
+        segmentQuestions++;
 
         if (index == correctButtonIndex)
         {
             feedbackIcons[index].sprite = tickSprite;
             feedbackIcons[index].gameObject.SetActive(true);
             score++;
+            segmentScore++;
 
             // 🔊 Play random correct answer clip
-            if (numbersVoice != null)
+            if (numbersVoice != null && NumbersVoice.IsSFXOn)
             {
                 numbersVoice.PlayCorrectSound();
+                correctAudio.Play();
             }
         }
         else
@@ -113,9 +196,10 @@ public class QuizGameLevel2 : MonoBehaviour
             feedbackIcons[correctButtonIndex].gameObject.SetActive(true);
 
             // 🔊 Play random wrong answer clip
-            if (numbersVoice != null)
+            if (numbersVoice != null && NumbersVoice.IsSFXOn)
             {
                 numbersVoice.PlayWrongSound();
+                errorAudio.Play();
             }
         }
 
@@ -158,13 +242,38 @@ public class QuizGameLevel2 : MonoBehaviour
     void ShowSegmentResult()
     {
         segmentResultPanel.SetActive(true);
-        segmentResultText.text = $"Progress: {score}/{questionsAnswered}";
 
-        if (Initialize.Instance != null)
+        // Show progress of just this segment
+        segmentResultText.text = $"Score: {segmentScore}/{segmentQuestions}";
+
+        // Calculate stars for this segment only
+        float percentage = ((float)segmentScore / segmentQuestions) * 100f;
+
+        star1.sprite = emptyStar;
+        star2.sprite = emptyStar;
+        star3.sprite = emptyStar;
+
+        if (percentage >= 80f)
+        {
+            star1.sprite = filledStar;
+            star2.sprite = filledStar;
+            star3.sprite = filledStar;
+        }
+        else if (percentage >= 50f)
+        {
+            star1.sprite = filledStar;
+            star2.sprite = filledStar;
+        }
+        else if (percentage >= 20f)
+        {
+            star1.sprite = filledStar;
+        }
+
+        /*if (Initialize.Instance != null)
         {
             Initialize.Instance.LoadInterstitialAd();
             Initialize.Instance.ShowInterstitialAd();
-        }
+        }*/
     }
 
     void ShowFinalResult()
@@ -208,6 +317,15 @@ public class QuizGameLevel2 : MonoBehaviour
     public void ContinueGameAfterSegment()
     {
         segmentResultPanel.SetActive(false);
+
+        // Reset counters for next segment
+        segmentScore = 0;
+        segmentQuestions = 0;
+        currentlevel++;
+        PlayerPrefs.SetInt("CurrentLevel",currentlevel);
+        levelText.text = "Level: " + currentlevel;
+        PlayerPrefs.Save();
+
         AskQuestion();
     }
 

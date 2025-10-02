@@ -30,7 +30,7 @@ public class StartGameSound2 : MonoBehaviour
             }
 
             // Always wait extra 5 seconds before checking again
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(12f);
         }
     }
 }

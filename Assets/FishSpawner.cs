@@ -18,7 +18,7 @@ public class FishSpawner : MonoBehaviour
         {
             int index = Random.Range(0, available.Count);
             GameObject fish = Instantiate(available[index], GetRandomPos(), Quaternion.identity, fishParent);
-            fish.AddComponent<FishMover>();
+            //fish.AddComponent<FishMover>();
             available.RemoveAt(index); // No duplicates
         }
     }

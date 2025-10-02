@@ -13,6 +13,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: fish13
       objectReference: {fileID: 0}
+    - target: {fileID: -8653719598885068355, guid: d960ee2c2e4048f469631fa140ac2421,
+        type: 3}
+      propertyPath: m_TagString
+      value: Fish
+      objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: d960ee2c2e4048f469631fa140ac2421,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -89,11 +94,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d960ee2c2e4048f469631fa140ac2421,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3716348394593982889}
+      addedObject: {fileID: -131391135453408}
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d960ee2c2e4048f469631fa140ac2421,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: -3343508372749446722}
+      addedObject: {fileID: -6460275390891212877}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: d960ee2c2e4048f469631fa140ac2421,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4964610684046629932}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: d960ee2c2e4048f469631fa140ac2421,
     type: 3}
 --- !u!1 &66619324405500940 stripped
@@ -115,34 +124,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
---- !u!50 &3716348394593982889
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 66619324405500940}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!61 &-3343508372749446722
+  margin: 0.2
+  minDirection: 0.3
+--- !u!61 &-131391135453408
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,7 +160,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.12996626, y: 3.9120078}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -186,5 +170,44 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9.317891, y: 5.236926}
   m_EdgeRadius: 0
+--- !u!50 &-6460275390891212877
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66619324405500940}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!210 &4964610684046629932
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66619324405500940}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 180
+  m_SortAtRoot: 0

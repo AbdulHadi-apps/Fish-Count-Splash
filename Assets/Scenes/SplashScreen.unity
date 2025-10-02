@@ -311,9 +311,9 @@ MonoBehaviour:
   appOpenAdController: {fileID: 0}
   useAdmob: 0
   useUnity: 1
-  BannerID1: ca-app-pub-1302707245894211/6560836581
+  BannerID1: ca-app-pub-1302707245894211/1611386875
   BannerID2: 
-  InterstitialID: ca-app-pub-1302707245894211/2377500254
+  InterstitialID: ca-app-pub-1302707245894211/6512645170
   RewardedID: 
   RewardedInterstitialID: 
   AppOpenID: 
